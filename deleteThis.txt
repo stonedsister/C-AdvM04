@@ -1,0 +1,152 @@
+Empty object to be child of hand
+
+Movement
+
+WeaponScr
+  // Add trigger to weapon
+  Static bool canPickUp
+  Static bool canFire
+  public Movement playerRefScr;
+  public GameObject playerRef;
+  public static int ammoCount;
+  void Start()
+  {
+    ammoCount = 100;
+  }
+  void Update()
+  {
+    if playerRefScr != null
+    {
+      if (playerRef.holdingWeapon) && playerRef.heldWeapon == this.gameObject)
+      {
+        canShoot = true;
+      }
+      
+      if((canShoot) && ammoCount > 0)
+      {
+        if(automatic && Input.GetMouseButton(0))
+        {
+          if((playerRefScr.GetAnim("isRunning"))
+          {
+	    playerRefScr.SetAnimf("isRunning");
+          }
+          playerRefScr.currentlyFiring = true;
+          StartCoroutine(FireWeapon());
+        
+        else if((semiautomatic) && Input.GetMouseButtonDown(0))
+        {
+           if((playerRefScr.GetAnim("isRunning"))
+           {
+	     playerRefScr.SetAnimf("isRunning"));
+           }
+           playerRefScr.currentlyFiring = true;
+           StartCoroutine(FireWeapon());
+	   StartCoroutine(LoadChamber());
+        }
+      }
+      playerRefScr.currentlyFiring = false;
+    }
+    if((!playerRefScr.GetAnim("isRunning) && (ammoCount = 0 || Input.GetKeyDown(KeyCode.R))
+    {
+      Reload();
+    }
+  }
+
+  public IEnumerator FireWeapon()
+  {
+    yield return new WaitForSeconds(fireDelay);
+    ammoCount -= 1;
+    playerRef.currentlyFiring = true;
+    // Firing action
+  }
+  public IEnumerator LoadChamber() // -> Interrupt if sprint before completed reload
+  {
+    float t = 0.0f;
+    while(t < chamberingDelay && playerRef.GetAnim("isRunning") == false
+    {
+      t += Time.delatTime();
+      yield;
+    }
+    yield return new WaitForSeconds(chamberingDelay);
+  }
+  public IEnumerator Reload()
+  {
+    yield return new WaitForSeconds(reloadSpeed);
+    totalAmmo -= clipSize;
+    ammoCount += clipSize;
+  }
+  
+  OnTriggerEnter(other collider)
+  {
+    if other.gameobject.comparetag("Player")
+    {
+      canPickUp = true;
+      playerRef = other.gameobject;
+      playerRefScr = playerRef.GetComponent<Movement>();
+      playerRef.holdableWeapon = this.gameobject;
+         
+    }
+
+  OnTriggerEnter(collider other)
+  {
+   if other.gameobject.comparetag("Player")
+    {
+      if(playerRef.heldWeapon != this.gameobject)
+      {
+        canPickUp = false;
+        playerRefScr = null;
+        playRef = null;
+        playerRefScr = null;
+        playerRef.holdableWeapon = null;
+      }
+    }
+  }	
+
+
+Movement
+  if(("isWalking") && (!currentlyFiring) && Input.GetKey(KeyCode.*){ Can Run }
+  public GameObject heldWeapon;
+  public bool holdingWeapon;
+  public GameObject holdableWeapon;
+  public Rigidbody heldWeaponRB;
+  public bool currentlyFiring;
+  public transform handTrans;
+  public transform heldWeaponTrans;
+
+  void Start()
+  {
+    handTrans = FindObject("hand").GetComponent<Transform>(); //Find object with name
+  }
+  
+  if((!holdingWeapon) && Input.GetKeyDown(KeyCode.P))
+  {
+    PickUp();
+  }
+  if((holdingWeapon) && (!currentlyFiring) && Input.GetKeyDown(KeyCode.D))
+  {
+    Drop();
+  }
+
+  public void PickUp()
+  {
+    holdingWeapon = true;
+    heldWeapon = holdableWeapon;
+    heldWeaponTrans = heldWeapon.transform;
+    heldWeaponTrans.SetParent(handTrans);
+    heldWeaponTrans.localPosition = Vector3.zero;
+    heldWeaponTrans.localRotation = Vector3.zero;
+    heldWeaponRB = heldWeapon.GetComponent<Rigidbody>();
+    heldWeaponRB.constraints = RigidbodyConstraints.FreezeAll;
+    
+  }
+
+  public void Drop()
+  {
+    heldWeapon.gameobject.getcomponent<WeaponScr>().playerRefScr = null;
+    heldWeapon.gameobject.getcomponent<WeaponScr>().playerRef = null;
+    heldWeapon.SetParent(null);
+    heldWeapRB.constraints = RigidbodyConstraints.None;
+    heldWeapon = null;
+    holdingWeapon = false;
+    heldWeaponTrans = null;
+  }
